@@ -1,0 +1,316 @@
+<! DOCTYPE  html >
+<html>
+
+<head>
+    <title>Doctor Dashboard</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+        }
+
+        .container {
+            display: flex;
+        }
+
+
+        .sidebar {
+            width: 220px;
+            background: #1e293b;
+            color: white;
+            height: 100vh;
+            padding: 20px;
+        }
+
+        .sidebar a {
+            text-decoration: none;
+            color: white;
+            display: block;
+        }
+
+        .sidebar li {
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .sidebar li:hover {
+            background: #334155;
+        }
+
+        .sidebar h2 { 
+            margin-bottom: 30px;
+        }
+
+        .sidebar {​ 
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebarli { 
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .sidebarli:hover { 
+            background: #334155;
+        }
+
+        .main {
+            flex: 1;
+            padding: 30px;
+        }
+
+
+        .cards {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            flex: 1;
+            padding: 20px;
+            border-radius: 10px;
+            color: white;
+        }
+
+        .blue {
+            background: #3b82f6;
+        }
+
+        .green {
+            background: #22c55e;
+        }
+
+        .card h3 {
+            margin: 0;
+        }
+
+        .card p {
+            font-size: 28px;
+            margin-top: 10px;
+        }
+
+        .table-section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #f1f5f9;
+        }
+
+        button {
+            padding: 6px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            background: #3b82f6;
+            color: white;
+        }
+
+        button:hover {
+            background: #2563eb;
+        }
+
+        .delete-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .delete-btn:hover {
+            background: #dc2626;
+        }
+
+        tr:hover {
+            background: #f9fafb;
+        }
+
+        button {
+            transition: 0.2s;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="sidebar">
+
+            <h2>Doctor Panel</h2>
+
+            <ul>
+
+                <li><a href="/doctor?section=dashboard">Dashboard</a></li>
+                <li><a href="/doctor?section=appointments">Appointments</a></li>
+                < li >< a  href = "/logout" > Logout </ a ></ li >
+
+            </ul>
+
+        </div>
+
+
+        <div class="main">
+
+            {% if section == 'dashboard' %}
+
+            <h1>Doctor Dashboard</h1>
+
+
+            <div class="cards">
+
+                <div class="card blue">
+                    <h3> Total Patients </h3>​​​
+                    <p>{{patients|length}}</p>
+                </div>
+
+                <div class="card green">
+                    <h3>Appointments</h3>
+                    <p>{{appointments|length}}</p>
+                </div>
+
+            </div>
+
+            {% endif %}
+
+
+            {% if section == 'patients' %}
+
+            <div class="table-section">
+
+                <h3> Patients </h3>​​​​
+
+                <table>
+
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Age</th>
+                        <th>Disease</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                    </tr>
+
+                    {% for p in patients %}
+
+                    <tr>
+                        <td>{{p[0]}}</td>
+                        <td>{{p[1]}}</td>
+                        <td>{{p[2]}}</td>
+                        <td>{{p[3]}}</td>
+                        <td>{{p[4]}}</td>
+
+                        <td>
+                            <a href="/delete_patient/{{p[0]}}" onclick="return confirm('Delete patient?')">
+                                <button class="delete-btn">Delete</button>
+                            </a>
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </table>
+
+            </div>
+
+            {% endif %}
+
+            
+            {% if section == 'appointments' %}
+            <div class="table-section">
+                <h3>Appointments</h3>
+
+                <table>
+                    <tr>
+                        <th>ID</th>
+                        <th>Patient Name</th>
+                        <th>View</th>
+                        <th>Edit</th>
+                        <th>Status</th>
+                    </tr>
+
+                    {% for a in appointments %}
+                    <tr>
+
+                        <td>{{ a[0] }}</td>
+                        <td>{{ a[1] }}</td>
+
+                        <!-- View Column -->
+                        <td>
+                            <form action="/doctor/view_appointment/{{ a[0] }}" method="GET">
+                                <button type="submit">View</button>
+                            </form>
+                        </td>
+
+                        <!-- Edit Column -->
+                        <td>
+                            <form action="/doctor/edit_appointment/{{ a[0] }}" method="GET">
+                                <button type="submit">Edit</button>
+                            </form>
+                        </td>
+
+                        <!-- Status Column -->
+                        <td>
+                            <form action="/doctor/update_appointment_status/{{ a[0] }}" method="POST">
+
+                                <select name="status" onchange="this.form.submit()">
+
+                                    <option value="Completed" {% if a[5]=='Completed' %} selected {% endif %}>
+                                        Completed
+                                    </option>
+
+                                    <option value="Pending" {% if a[5]=='Pending' %} selected {% endif %}>
+                                        Pending
+                                    </option>
+
+                                </select>
+
+                                {% if a[5]=='Pending' %}
+                                <input type="date" name="next_date">
+                                {% endif %}
+
+                            </form>
+                        </td>
+
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            {% endif %}
+        </div>
+
+
+    </div>
+
+
+
+</body>
+
+</html>
