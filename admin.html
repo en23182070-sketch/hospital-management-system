@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Segoe UI, sans-serif;
+            background: #f1f5f9;
+        }
+
+        .dashboard {
+            display: flex;
+            min-height: 100vh;
+        }
+
+
+        .sidebar {
+            width: 230px;
+            background: #1e293b;
+            color: white;
+            padding: 25px 20px;
+        }
+
+        .sidebar h3 {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 12px 15px;
+            margin: 8px 0;
+            color: #cbd5e1;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: 0.3s;
+        }
+
+        .sidebar a:hover {
+            background: #334155;
+            color: white;
+        }
+
+        .content {
+            flex: 1;
+            padding: 30px;
+        }
+
+
+        h2 {
+            margin-bottom: 25px;
+        }
+
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat {
+            padding: 20px;
+            border-radius: 10px;
+            color: white;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat big {
+            display: block;
+            font-size: 26px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+
+        .blue {
+            background: #3b82f6;
+        }
+
+        .teal {
+            background: #14b8a6;
+        }
+
+        .orange {
+            background: #f97316;
+        }
+
+        .green {
+            background: #22c55e;
+        }
+
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th {
+            text-align: left;
+            padding: 12px;
+            background: #e5e7eb;
+        }
+
+        table td {
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        table tr:hover {
+            background: #f9fafb;
+        }
+
+
+        input,
+        select {
+            padding: 8px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            margin: 5px;
+        }
+
+        button {
+            padding: 8px 14px;
+            background: #2563eb;
+            border: none;
+            color: white;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        .report-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80vh;
+        }
+
+        .report-card {
+            width: 350px;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            text-align: left;
+        }
+
+        .report-card h3 {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .report-card p {
+            margin: 6px 0;
+            font-size: 14px;
+        }
+
+        .report-card hr {
+            margin: 10px 0;
+        }
+
+        .report-buttons {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .report-buttons button {
+            margin: 5px;
+        }
+
+        @media print {
+
+            .sidebar,
+            .report-buttons {
+                display: none;
+            }
+        }
+
+        .report-btn {
+            display: inline-block;
+            padding: 10px 16px;
+            background: #2563eb;
+            color: white;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+
+        .report-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .report-card-new {
+            width: 650px;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            font-size: 14px;
+        }
+
+        /* HEADER */
+        .report-header {
+            background: #16a34a;
+            color: white;
+            text-align: center;
+            padding: 15px;
+        }
+
+        /* BODY */
+        .report-body {
+            display: flex;
+            padding: 20px;
+        }
+
+        .left-side {
+            width: 50%;
+        }
+
+        .right-side {
+            width: 50%;
+            background: #f0fdf4;
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        /* FOOTER */
+        .report-footer {
+            background: #16a34a;
+            color: white;
+            text-align: center;
+            padding: 10px;
+        }
+
+
+        .report-buttons {
+            text-align: center;
+            margin: 15px;
+        }
+
+
+        .alert-box {
+            background: #fee2e2;
+            border-left: 6px solid #dc2626;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .alert-box h4 {
+            margin: 0 0 8px 0;
+            color: #b91c1c;
+        }
+
+        .alert-box p {
+            margin: 4px 0;
+            font-size: 14px;
+            color: #7f1d1d;
+        }
+    </style>
+</head>
+
+<body>
+
+    <section class="page" id="admin">
+        <div class="dashboard">
+
+            <div class="sidebar">
+
+                <h3>Hospital Admin</h3>
+
+                <a href="/admin?section=dashboard">Dashboard</a>
+                <a href="/admin?section=doctors">Doctors</a>
+                <a href="/admin?section=appointments">Appointments</a>
+                <a href="/admin?section=billing">Billing</a>
+                <a href="/admin?section=settings">Settings</a>
+                <a href="/logout">Logout</a>
+                <a href="/admin?section=sms">SMS Logs</a>
+
+            </div>
+
+            <div class="content">
+
+                {% if section == 'dashboard' %}
+
+                <h2>Welcome {{ name }}</h2>
+
+                <div class="stats">
+
+                    <div class="stat blue">
+                        Total Patients
+                        <big>{{ total_patients }}</big>
+                    </div>
+
+                    <div class="stat teal">
+                        Total Doctors
+                        <big>{{ total_doctors }}</big>
+                    </div>
+
+                    <div class="stat orange">
+                        Total Appointments
+                        <big>{{ total_appointments }}</big>
+                    </div>
+
+                    <div class="stat green">
+                        Total Earnings
+                        <big>$100</big>
+                    </div>
+
+                </div>
+
+                {% endif %}
+
+                {% if section == 'doctors' %}
+
+                <h2>Doctor Management</h2>
+
+                <form action="/add_doctor" method="POST">
+
+                    <input type="text" name="name" placeholder="Doctor Name" required>
+
+                    <select name="specialization" required>
+                        <option value="">Select Specialization</option>
+                        <option value="Cardiologist">Cardiologist</option>
+                        <option value="Dermatologist">Dermatologist</option>
+                        <option value="Neurologist">Neurologist</option>
+                        <option value="Orthopedic">Orthopedic</option>
+                        <option value="Pediatrician">Pediatrician</option>
+                        <option value="Gynecologist">Gynecologist</option>
+                        <option value="General Physician">General Physician</option>
+                    </select>
+
+                    <input type="text" name="phone" placeholder="Phone" required pattern="[0-9]{10}"
+                        title="Enter 10 digit number">
+
+                    <select name="status">
+                        <option>Available</option>
+                        <option>On Leave</option>
+                    </select>
+
+                    <button type="submit">Add Doctor</button>
+                </form>
+
+                <div class="card">
+
+                    <h4>Doctor List</h4>
+
+                    <table>
+
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Specialization</th>
+                            <th>Phone</th>
+                            <th>Status</th>
+                            <th>Delete</th>
+                        </tr>
+
+                        {% for doctor in doctors %}
+
+                        <tr>
+                            <td>{{ doctor[0] }}</td>
+                            <td>{{ doctor[1] }}</td>
+                            <td>{{ doctor[2] }}</td>
+                            <td>{{ doctor[3] }}</td>
+                            <td>
+                                <a href="/update_doctor_status/{{ doctor[0] }}">
+                                    <button>
+                                        {{ doctor[4] }}
+                                    </button>
+                                </a>
+                            </td>
+                            <td>
+                                <a href="/delete_doctor/{{ doctor[0] }}" onclick="return confirm('Delete doctor?')">
+                                    <button class="delete-btn">Delete</button>
+                                </a>
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </table>
+
+                </div>
+
+                {% endif %}
+
+
+                {% if section == 'appointments' or section == 'add_appointment' %}
+
+                <h2>Appointment Management</h2>
+
+                {% if section == 'appointments' and absent_notifications %}
+               
+                    <h4> Doctor Absent Alerts</h4>
+
+                    <form method="POST" action="/cancel_absent_appointments">
+                        <button style="background:red; margin-top:10px;">
+                            Cancel All Affected Appointments
+                        </button>
+                    </form>
+
+                    {% for msg in absent_notifications %}
+                    <p>{{ msg }}</p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <a href="/admin?section=add_appointment">
+                    <button>+ Add Appointment</button>
+                </a>
+
+                <!-- SHOW FORM ONLY WHEN BUTTON CLICKED -->
+                {% if section == 'add_appointment' %}
+
+                <div class="card">
+                    <h3>Add Appointment</h3>
+
+                    <form action="/add_appointment" method="POST">
+
+                        <input type="text" name="patient_name" placeholder="Patient Name" required pattern="[A-Za-z ]+"
+                            title="Only letters allowed">
+
+                        <select name="doctor_name" required>
+                            <option value="">Select Doctor</option>
+
+                            {% for doctor in doctors %}
+                            <option value="{{ doctor[1] }}">{{ doctor[1] }}</option>
+                            {% endfor %}
+
+                        </select>
+
+                        <input type="date" name="date" required>
+                        <input type="time" name="time" required>
+                        <select name="gender" required>
+                            <option value="">Select Gender</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <select name="blood_group">
+                            <option>Blood Group</option>
+                            <option>A+</option>
+                            <option>B+</option>
+                            <option>O+</option>
+                            <option>AB+</option>
+                            <option>A-</option>
+                            <option>B-</option>
+                            <option>O-</option>
+                            <option>AB-</option>
+                        </select>
+                        <input type="text" name="phone" placeholder="Phone Number" required pattern="[0-9]{10}"
+                            title="Enter 10 digit number">
+
+                        <input type="text" name="disease" placeholder="Disease" pattern="^[A-Za-z]+( [A-Za-z]+)*$">
+
+                        <input type="text" name="previous_treatment" placeholder="Previous Treatment" required
+                            pattern="^[A-Za-z]+( [A-Za-z]+)*$">
+
+                        <select name="status" required>
+                            <option value="">Select Status</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Confirmed">Confirmed</option>
+                        </select>
+
+
+
+
+                        <br><br>
+                        <button type="submit">Save Appointment</button>
+
+                    </form>
+
+                </div>
+
+                {% endif %}
+
+                {% if section == 'view_appointment' and selected_appointment %}
+
+                <div class="card">
+
+                    <h3>Appointment Details</h3>
+
+                    <p><b>ID:</b> {{ selected_appointment[0] }}</p>
+                    <p><b>Patient:</b> {{ selected_appointment[1] }}</p>
+                    <p><b>Doctor:</b> {{ selected_appointment[2] }}</p>
+                    <p><b>Date:</b> {{ selected_appointment[3] }}</p>
+                    <p><b>Time:</b> {{ selected_appointment[4] }}</p>
+                    <p><b>Status:</b> {{ selected_appointment[5] }}</p>
+                    <p><b>Gender:</b> {{ selected_appointment[6] }}</p>
+                    <p><b>Blood Group:</b> {{ selected_appointment[7] }}</p>
+                    <p><b>Phone:</b> {{ selected_appointment[8] }}</p>
+                    <p><b>Disease:</b> {{ selected_appointment[9] }}</p>
+                    <p><b>Previous Treatment:</b> {{ selected_appointment[10] }}</p>
+
+                    <a href="/admin?section=appointments">
+                        <button>⬅ Back</button>
+                    </a>
+
+                    <a href="/admin?section=report&id={{ selected_appointment[0] }}" class="report-btn">
+                        🧾 Generate Report Card
+                    </a>
+
+                </div>
+
+                {% endif %}
+                <!-- ALWAYS SHOW TABLE -->
+
+                <div class="card">
+
+                    <form method="GET" action="/admin">
+                        <input type="hidden" name="section" value="appointments">
+                        <input type="text" name="search" placeholder="Search Patient Name">
+                        <button type="submit">Search</button>
+                    </form>
+
+                    <a href="/admin?section=appointments">
+                        <button type="button">Clear</button>
+                    </a>
+
+                    <h4>Appointment List</h4>
+
+                    <a href="/admin?section=sections">
+                        <button>📂 View Sections</button>
+                    </a>
+
+
+
+                    <table>
+
+                        <tr>
+                            <th>ID</th>
+                            <th>Patient</th>
+                            <th>Doctor</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                            <th>Message</th>
+                            <th>Delete</th>
+                        </tr>
+
+
+                        {% for appointment in appointments %}
+
+                        <tr>
+                            <td>{{ appointment[0] }}</td>
+                            <td>{{ appointment[1] }}</td>
+                            <td>{{ appointment[2] }}</td>
+                            <td>{{ appointment[3] }}</td>
+                            <td>{{ appointment[5] }}</td>
+
+                            <td>
+                                <a href="/admin?section=view_appointment&id={{ appointment[0] }}">
+                                    <button type="button">View</button>
+                                </a>
+                            </td>
+
+                             <td>
+                                <a href="/send_patient_sms/{{ appointment[0] }}">
+                                   <button type="button">Send Message</button>
+                                 </a>
+                            </td>
+
+                            <td>
+                                <a href="/delete_appointment/{{ appointment[0] }}"
+                                    onclick="return confirm('Are you sure to delete this appointment?')">
+                                    <button style="background:red;">Delete</button>
+                                </a>
+                            </td>
+
+
+                           
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </table>
+
+                </div>
+
+                {% endif %}
+
+
+                {% if section == 'sections' %}
+
+                <h2>Appointment Sections</h2>
+
+                <div class="card">
+
+                    {% for disease, items in grouped_appointments.items() %}
+
+                    <h3>{{ disease }}</h3>
+
+                    <table>
+                        <tr>
+                            <th>ID</th>
+                            <th>Patient</th>
+                            <th>Doctor</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                        </tr>
+
+                        {% for a in items %}
+                        <tr>
+                            <td>{{ a[0] }}</td>
+                            <td>{{ a[1] }}</td>
+                            <td>{{ a[2] }}</td>
+                            <td>{{ a[3] }}</td>
+                            <td>{{ a[5] }}</td>
+                        </tr>
+                        {% endfor %}
+
+                    </table>
+
+                    <br>
+
+                    {% endfor %}
+
+                    <a href="/admin?section=appointments">
+                        <button>⬅ Back</button>
+                    </a>
+
+                </div>
+
+                {% endif %}
+
+                {% if section == 'report' and selected_appointment %}
+
+                <div class="report-container">
+
+                    <div class="report-card-new">
+
+                        <!-- HEADER -->
+                        <div class="report-header">
+                            <h1>Bai Ratan Bai Hospital</h1>
+                            <p>Health Card</p>
+                        </div>
+
+                        <!-- BODY -->
+                        <div class="report-body">
+
+                            <!-- LEFT SIDE -->
+                            <div class="left-side">
+
+                                <p><b>Card No:</b> {{ selected_appointment['id'] }}</p>
+                                <p><b>Patient Name:</b> {{ selected_appointment['patient_name'] }}</p>
+                                <p><b>Gender:</b> {{ selected_appointment['gender'] }}</p>
+                                <p><b>Date:</b> {{ selected_appointment['date'] }}</p>
+                                <p><b>Doctor:</b> {{ selected_appointment['doctor_name'] }}</p>
+                                <p><b>Phone:</b> {{ selected_appointment['phone']or 'N/A' }}</p>
+
+                            </div>
+
+                            <!-- RIGHT SIDE -->
+                            <div class="right-side">
+
+                                <h4>Rules & Benefits</h4>
+                                <ul>
+                                    <li>✔ Show card at reception</li>
+                                    <li>✔ Discount on consultation</li>
+                                    <li>✔ Discount on pharmacy</li>
+                                    <li>✔ Discount on lab tests</li>
+                                    <li>✔ Valid for all packages</li>
+                                </ul>
+
+                            </div>
+
+                        </div>
+
+                        <!-- FOOTER -->
+                        <div class="report-footer">
+                            <p> Your Hospital Address</p>
+                            <p> +91 XXXXXXXX</p>
+                        </div>
+
+                        <div class="report-buttons">
+                            <button onclick="window.print()">🖨 Print</button>
+
+                            <a href="/admin?section=appointments">
+                                <button>⬅ Back</button>
+                            </a>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {% endif %}
+
+                {% if section == 'view_appointment' and selected_appointment %}
+
+                <h2>Appointment Details</h2>
+
+                <div class="card">
+
+                    <p><b>ID:</b> {{ selected_appointment['id'] }}</p>
+                    <p><b>Patient:</b> {{ selected_appointment['patient_name'] }}</p>
+                    <p><b>Doctor:</b> {{ selected_appointment['doctor_name'] }}</p>
+                    <p><b>Date:</b> {{ selected_appointment['date'] }}</p>
+                    <p><b>Time:</b> {{ selected_appointment['time'] }}</p>
+                    <p><b>Status:</b> {{ selected_appointment['status'] }}</p>
+                    <p><b>Gender:</b> {{ selected_appointment['gender'] }}</p>
+                    <p><b>Blood Group:</b> {{ selected_appointment['blood_group'] }}</p>
+                    <p><b>Phone:</b> {{ selected_appointment['phone'] }}</p>
+                    <p><b>Disease:</b> {{ selected_appointment['disease'] }}</p>
+                    <p><b>Previous Treatment:</b> {{ selected_appointment['previous_treatment'] }}</p>
+
+                    <a href="/admin?section=appointments">
+                        <button>⬅ Back</button>'blood_group'
+                    </a>
+
+                    <a href="/admin?section=report&id={{ selected_appointment[0] }}">
+                        <button>🧾 Generate Report</button>
+                    </a>
+
+                </div>
+
+                {% endif %}
+
+
+                {% if section == 'billing' %}
+
+                <h2>Billing</h2>
+
+                <form action="/add_bill" method="POST">
+
+                    <input type="text" name="patient_name" placeholder="Patient Name" required>
+
+                    <input type="text" name="doctor_name" placeholder="Doctor Name" required>
+
+                    <input type="text" name="treatment" placeholder="Treatment" required>
+
+                    <input type="number" name="amount" placeholder="Amount" required>
+
+                    <input type="date" name="bill_date" required>
+
+                    <button type="submit">Generate Bill</button>
+
+                </form>
+
+                <br>
+
+                <table>
+
+                    <tr>
+                        <th>ID</th>
+                        <th>Patient</th>
+                        <th>Doctor</th>
+                        <th>Treatment</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                    </tr>
+
+                    {% for bill in bills %}
+
+                    <tr>
+                        <td>{{ bill[0] }}</td>
+                        <td>{{ bill[1] }}</td>
+                        <td>{{ bill[2] }}</td>
+                        <td>{{ bill[3] }}</td>
+                        <td>{{ bill[4] }}</td>
+                        <td>{{ bill[5] }}</td>
+                    </tr>
+
+                    {% endfor %}
+
+                </table>
+
+                {% endif %}
+
+                {% if section == 'settings' %}
+
+                <h2>Hospital Settings</h2>
+
+                <div class="card">
+
+                    <form method="POST" action="/update_settings">
+
+                        <label>Hospital Name</label>
+                        <input type="text" name="hospital_name" placeholder="Enter hospital name">
+
+                        <label>Admin Email</label>
+                        <input type="email" name="email" placeholder="Enter email">
+
+                        <label>Contact Number</label>
+                        <input type="text" name="contact" placeholder="Enter phone number">
+
+                        <button type="submit">Save Settings</button>
+
+                    </form>
+
+                </div>
+
+                {% endif %}
+
+                {% if section == 'sms' %}
+
+                <h2>SMS Logs</h2>
+
+                <div class="card">
+                    <table>
+                        <tr>
+                            <th>Patient</th>
+                            <th>Phone</th>
+                            <th>Message</th>
+                            <th>Date</th>
+                        </tr>
+
+                        {% for sms in sms_logs %}
+                        <tr>
+                            <td>{{ sms[1] }}</td>
+                            <td>{{ sms[2] }}</td>
+                            <td>{{ sms[3] }}</td>
+                            <td>{{ sms[4] }}</td>
+                        </tr>
+                        {% endfor %}
+
+                    </table>
+                </div>
+
+                {% endif %}
+
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>
